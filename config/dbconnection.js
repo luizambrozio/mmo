@@ -5,8 +5,8 @@ var mongo =require('mongodb');
   var db =new mongo.Db(
     'got',
     new mongo.Server(
-      'root:123@ds163699.mlab.com', //endereco
-      63699,  //porta de conexao
+      'localhost', //endereco
+      27017,  //porta de conexao
       {}
     ),
     {}
