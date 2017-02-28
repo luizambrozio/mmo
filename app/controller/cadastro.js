@@ -24,5 +24,6 @@ module.exports.cadastrar = function(application, req, res){
     UsuariosDAO.inserirUsuario(dadosForm);
     jogoDAO.gerarParametros(dadosForm.usuario);
 
-    res.send('podemos cadastrar');
+    var msn = 'C'
+    res.render('index',{validacao:{}, msn});
 }

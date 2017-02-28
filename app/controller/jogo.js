@@ -1,6 +1,6 @@
 module.exports.jogo = function(application, req, res){
   if(req.session.logado !== true){
-        res.send("Voce nao esta logado");
+        res.send('vc não estalogado')
         return;
   }
 
@@ -21,7 +21,8 @@ module.exports.jogo = function(application, req, res){
 module.exports.sair = function(application, req, res){
 
     req.session.destroy(function(err){
-      res.render("index", {validacao: {}});
+      var msn = 'E'
+      res.render("index", {validacao: {}, msn});
     });
 
 }
