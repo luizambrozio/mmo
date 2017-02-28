@@ -39,11 +39,32 @@
 						method: "get",
 						success: function(data){
 							$('#acoes').html(data);
+
+							clearTimeout(timerId);
+							cronometro();
 						}
-					})
+					});
 				});
 
 			});
+
+			var timerId = null;
+
+			function cronometro() {
+				$('.tempo_restante').each(function(){
+					var segundos = $(this).html();
+					var segundos_restante = parseInt(segundos) - 1;
+
+					if(segundos_restante<0){
+						window.location.href ="/jogo?msg=C";
+					}
+					else{
+						$(this).html(segundos_restante);
+					}
+				});
+
+				timerId = setTimeout('cronometro()', 1000);
+			}
 
 		</script>
 
@@ -74,6 +95,17 @@
 										<strong>Comando efetuado</strong>
 									</div>
 								<% } %>
+						<% if(msg == 'C') { %>
+									<div class="alert alert-info" id="msg">
+										<strong>Comando Completo</strong>
+									</div>
+						<% } %>
+
+						<% if(msg == 'D') { %>
+									<div class="alert alert-info" id="msg">
+										<strong>Senhor, Ordem revogada</strong>
+									</div>
+						<% } %>
 
 			<div class="row">
 	    		<div class="col-sm-3 casa">
