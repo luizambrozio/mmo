@@ -1,5 +1,5 @@
 module.exports.jogo = function(application, req, res){
-  if(req.session.logado !== true){
+  if(req.session.autorizado !== true){
         res.send('vc não estalogado')
         return;
   }
@@ -10,8 +10,7 @@ module.exports.jogo = function(application, req, res){
   }
 
   var usuario = req.session.usuario;
-  var connection = application.config.dbconnection;
-  var jogoDAO = new application.app.models.jogoDAO(connection);
+  var jogoDAO = new application.app.models.JogoDAO();
 
 
   jogoDAO.iniciarJogo(req, res, usuario, msg);
@@ -33,8 +32,7 @@ module.exports.suditos = function(application, req, res){
 
 module.exports.pergaminhos = function(application, req, res){
 
-  var connection = application.config.dbconnection;
-  var jogoDAO = new application.app.models.jogoDAO(connection)
+  var jogoDAO = new application.app.models.JogoDAO()
 
   var usuario = req.session.usuario;
   jogoDAO.getAcoes(res, usuario);
@@ -54,8 +52,7 @@ module.exports.ordernar_acao_suditos = function(application, req, res){
     return;
   }
 
-  var connection = application.config.dbconnection;
-  var jogoDAO = new application.app.models.jogoDAO(connection);
+  var jogoDAO = new application.app.models.JogoDAO();
 
   dadosForm.usuario = req.session.usuario;
   jogoDAO.acao(dadosForm);
@@ -67,8 +64,7 @@ module.exports.revogar_acao = function(application, req, res){
   var url_query = req.query;
   var _id = url_query.id_acao;
 
-  var connection = application.config.dbconnection;
-  var jogoDAO = new application.app.models.jogoDAO(connection);
+  var jogoDAO = new application.app.models.JogoDAO();
 
   jogoDAO.revogar_acao(res, _id);
 }

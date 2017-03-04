@@ -29,7 +29,7 @@ consign()
 .include('app/routes')
 .then('app/models')
 .then('app/controller')
-.then('config/dbconnection.js')
+//.then('config/dbconnection.js')
 .into(app);
 
 module.exports = app;

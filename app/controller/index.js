@@ -1,6 +1,6 @@
 module.exports.index = function(application, req, res){
 
-  
+
   res.render('index', {validacao:{}, msn: {}});
 
 }
@@ -19,8 +19,7 @@ module.exports.autenticar = function(application, req, res){
     res.render("index", {validacao:erros, msn : {}});
     return;
   }
-  var connection = application.config.dbconnection;
-  var UsuariosDAO = new application.app.models.UsuariosDAO(connection);
+  var UsuariosDAO = new application.app.models.UsuariosDAO();
 
   UsuariosDAO.autenticar(dadosForm, req, res);
 

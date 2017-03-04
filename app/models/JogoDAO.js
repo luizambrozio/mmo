@@ -1,11 +1,32 @@
 var ObjectID = require('mongodb').ObjectId;
+var mongo = require('mongodb');
+
+var connMongoDB = function(callback){
+
+	var objDb = new mongo.Db(
+		'got',
+		new mongo.Server(
+			'ds163699.mlab.com', //string contendo o endereço do servidor
+			63699, //porta de conexão
+			{}
+		),
+		{}
+	);
+
+	objDb.open(function(err, db) {
+		db.authenticate('root', '123', function(err, result) {
+			callback(db)
+		})
+	})
+}
 
 function jogoDAO(connection) {
-  this._connection = connection();
+  this._connection = connMongoDB;
 }
 
 jogoDAO.prototype.gerarParametros = function (usuario) {
-  this._connection.open(function(err, mongoclient){
+  this._connection(function(mongoclient){
+    console.log('entro jogoDAO');
     mongoclient.collection("jogo", function(err, collection){
       collection.insert({
         usuario: usuario,
@@ -22,18 +43,18 @@ jogoDAO.prototype.gerarParametros = function (usuario) {
 };
 
 jogoDAO.prototype.iniciarJogo = function (req, res, usuario, msg) {
-  this._connection.open(function(err, mongoclient){
+  this._connection(function(mongoclient){
     mongoclient.collection("jogo", function(err, collection){
       collection.find({usuario : usuario}).toArray(function(err, result){
         res.render('jogo', {img_casa: req.session.casa, jogo : result[0], msg : msg});
       mongoclient.close();
+      });
     });
   });
-});
 };
 
 jogoDAO.prototype.acao = function (acao) {
-  this._connection.open(function(err, mongoclient){
+  this._connection(function(mongoclient){
     mongoclient.collection("acao", function(err, collection){
 
       var date = new Date();
@@ -70,7 +91,7 @@ jogoDAO.prototype.acao = function (acao) {
 };
 
 jogoDAO.prototype.getAcoes = function (res, usuario) {
-  this._connection.open(function(err, mongoclient){
+  this._connection(function(mongoclient){
     mongoclient.collection("acao", function(err, collection){
 
       var date = new Date();
@@ -86,7 +107,7 @@ jogoDAO.prototype.getAcoes = function (res, usuario) {
 }
 
 jogoDAO.prototype.revogar_acao = function (res, _id) {
-  this._connection.open(function(err, mongoclient){
+  this._connection(function(mongoclient){
     mongoclient.collection("acao", function(err, collection){
       collection.remove({_id : ObjectID(_id)},function(err, result){
         res.redirect("jogo?msg=D");
